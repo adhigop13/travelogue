@@ -6,7 +6,7 @@ export async function getTrips(req: Request, res: Response) {
     try {
             const trips = Trip.find({tripOwner: res.locals.user._id})
             res.status(200).json({
-            message: "Users fetched",
+            message: "Trips fetched",
             users: [],
         });
     }
