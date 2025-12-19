@@ -1,15 +1,14 @@
 import { RegisterBody, LoginBody } from "../types";
 import { Request, Response } from "express";
 import UserModel from "../models/users.model";
-
 export async function registerUser (req: Request<{}, {}, RegisterBody>, res: Response) {
     const { username, name, password, email } = req.body;
     if (!username || !name || !email || !password) {
         return res.status(400).json({error: "Missing required fields!"});
     } else {
         try {
+            console.log(req.body);
             const userCreated = await UserModel.create(req.body);
-            console.log("Hello");
             return res.status(201).json({user: userCreated});
         } catch (e) {
             if (e instanceof Error) {
