@@ -1,10 +1,19 @@
 import express from 'express';
+import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import tripRoutes from './routes/trip.routes';
 import userAuth from './routes/userAuth.routes';
 dotenv.config();
 const app = express();
+
+// Use the CORS middleware
+app.use(cors({
+    origin: 'http://localhost:3000', // Allow your specific frontend URL
+    methods: ['GET', 'POST'],        // Allow these methods
+    credentials: true                // Allow cookies/headers if needed
+}));
+
 app.use(express.json());
 const port = process.env.PORT;
 
