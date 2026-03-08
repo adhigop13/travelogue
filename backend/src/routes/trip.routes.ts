@@ -1,9 +1,9 @@
 import { Router } from "express";
 import {getTrips} from "../controllers/trips.controller";
-import authMiddleware from "../middleware/authMiddleware";
+import requireSignIn from "../middleware/authMiddleware";
 
 const router = Router();
 
-router.get('/', authMiddleware, getTrips);
+router.get('/', requireSignIn, getTrips);
 
 export default router;

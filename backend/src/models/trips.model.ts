@@ -12,11 +12,11 @@ const tripSchema = new mongoose.Schema({
         required: true
     }],
     tripOwner: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         ref: "User",
         required: true
     }
 });
 
-const Trip = mongoose.model("Trips", tripSchema);
+const Trip = mongoose.model("Trip", tripSchema);
 export default Trip;

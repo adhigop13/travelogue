@@ -1,10 +1,12 @@
 import axios from "axios"
 import { useState } from "react"
 import { Navigate, useNavigate } from "react-router-dom";
-import Dashboard from "./Dashboard";
+
 import { ToastContainer, toast } from 'react-toastify';
 
+
 export default function Login() {
+    const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const notifySuccess = () => toast("Login succeeded!");
@@ -14,6 +16,7 @@ export default function Login() {
             const response = await axios.post('http://localhost:5000/auth/login', {username,password});
             localStorage.setItem('token', response.data.token);
             console.log('Login successful: ');
+            navigate('/dashboard');
             notifySuccess();
         } catch (error) {
             notifyFailure();

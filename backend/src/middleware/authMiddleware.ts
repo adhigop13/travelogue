@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import {Request, Response, NextFunction} from 'express';
 
 //Validate JWT
-const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
+const requireSignIn = (req: Request, res: Response, next: NextFunction) => {
   const token = req.header('Authorization')?.replace('Bearer ', '');
   if (!token) return res.status(401).send('Access denied');
 
@@ -16,8 +16,9 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
     res.locals.user = decoded; // attach user info here
     next();
   } catch (err) {
+    console.log(err);
     res.status(401).send('Invalid token');
   }
 };
 
-export default authMiddleware;
+export default requireSignIn;

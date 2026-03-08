@@ -4,11 +4,10 @@ import Trip from '../models/trips.model';
 export async function getTrips(req: Request, res: Response) {
     console.log("Endpoint hit!");
     try {
-            const trips = Trip.find({tripOwner: res.locals.user._id})
-            res.status(200).json({
-            message: "Trips fetched",
-            users: [],
-        });
+            console.log(res.locals.user.username)
+            const trips = await Trip.find({tripOwner: res.locals.user.username});
+            console.log("Trips found:", trips);
+            res.status(200).json(trips);
     }
     catch (error) {
         res.status(500).json({message: "Internal Server Error"});
