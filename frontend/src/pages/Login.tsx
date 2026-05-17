@@ -1,7 +1,7 @@
 import axios from "axios"
 import { useState } from "react"
 import { Navigate, useNavigate } from "react-router-dom";
-
+import backgroundVideo from "../assets/bg2.mp4"
 import { ToastContainer, toast } from 'react-toastify';
 
 
@@ -24,20 +24,53 @@ export default function Login() {
         }
     }
 
-    return <div>
-        <p> Login Page</p>
-        <label>
-        Username: <input value = {username}
-        onChange={(e) => setUsername(e.target.value)}/>
-        </label><br />
-        <label>
-        Password: <input name = "Username"
-        type = "password"
-        onChange={(e) => setPassword(e.target.value)}/>
-        </label><br /><br />
-        <button onClick={handleLogin}>
-            Submit
-        </button>
+    return (
+    <div className="relative min-h-screen flex items-center justify-center">
+           {/* Background video */}
+        <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover"
+            >
+            <source src={backgroundVideo} type="video/mp4" />
+        </video>
+
+         {/* Dark overlay */}
+        <div className="absolute inset-0 bg-black/40"></div>
+
+        {/* Login card */}
+        <div className="relative backdrop-blur-sm p-8 rounded-2xl shadow-lg w-96 border">
+            <h1 className="text-white text-3xl font-bold text-center mb-6">
+                Welcome Back
+            </h1>
+            <div className="space-y-4">
+                <label className="block">
+                    <span className="text-blue-500">
+                        Username
+                    </span>
+                    <input value = {username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    className="w-full mt-1 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                </label>
+
+                <label className="block">
+                    <span className = "text-blue-500">
+                        Password
+                    </span>
+                    <input name = "Username"
+                        type = "password"
+                        onChange={(e) => setPassword(e.target.value)}
+                        className="w-full mt-1 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                </label>
+                <div className = 'text-center'>
+                    <button onClick={handleLogin} className="w-full mt-1 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">   
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </div>
         <ToastContainer />
-    </div>
+    </div>)
 }

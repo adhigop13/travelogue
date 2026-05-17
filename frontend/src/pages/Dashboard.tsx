@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { Trip } from '../../../backend/src/types/trips';
+import type { Day } from "../../../backend/src/types/days";
 
 export default function Dashboard() {
     const [trips, setTrips] = useState<Trip[]>([]);
@@ -49,7 +50,7 @@ export default function Dashboard() {
 
     const handleLogout = () => {
         localStorage.removeItem('token');
-        window.location.href = '/login'; // Simple redirect
+        window.location.href = '/login'; 
     };
 
     if (loading) return <div style={{ padding: '20px' }}>Syncing with Travelogue...</div>;
@@ -74,11 +75,12 @@ export default function Dashboard() {
                             boxShadow: '0 2px 4px rgba(0,0,0,0.05)'
                         }}>
                             <h2 style={{ margin: '0 0 10px 0', color: '#2c3e50' }}>
-                                ✈️ {trip.tripName}
+                                {trip.tripName}
                             </h2>
                             <p style={{ color: '#666' }}>
                                 <strong>Plan:</strong> {trip.daysArray.length} days scheduled
                             </p>
+
                             <small style={{ color: '#999' }}>Trip ID: {trip._id}</small>
                         </div>
                     ))}
