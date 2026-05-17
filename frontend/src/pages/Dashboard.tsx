@@ -57,40 +57,59 @@ export default function Dashboard() {
     if (error) return <div style={{ padding: '20px', color: 'red' }}>{error}</div>;
 
     return (
-        <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px', fontFamily: 'sans-serif' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h1>My Itineraries</h1>
-                <button onClick={handleLogout} style={{ padding: '5px 10px', cursor: 'pointer' }}>Logout</button>
+        <div className="min-h-screen p-8">
+
+            <div className="flex items-center p-4">
+                <div className="flex-1"></div>
+                <div className='flex-1 text-center text-xl font-bold p-8 italic'>
+                    <h1>My Itineraries</h1>
+                </div>
+                <div className='flex-1 flex justify-end'>
+                    <button className= 'rounded-lg' onClick={handleLogout} >Logout</button>
+                </div>
             </div>
 
-            <hr />
+            <div className="grid grid-cols-2 gap-6 p-6">
 
-            {trips.length > 0 ? (
-                <div style={{ display: 'grid', gap: '20px', marginTop: '20px' }}>
-                    {trips.map((trip) => (
-                        <div key={trip._id} style={{ 
-                            border: '1px solid #ddd', 
-                            padding: '20px', 
-                            borderRadius: '12px',
-                            boxShadow: '0 2px 4px rgba(0,0,0,0.05)'
-                        }}>
-                            <h2 style={{ margin: '0 0 10px 0', color: '#2c3e50' }}>
+                {trips.length > 0 ? (
+                    trips.map((trip) => (
+                        <div
+                            key={trip._id}
+                            onClick={() => ""}
+                            className="
+                            p-6
+                            bg-white
+                            rounded-2xl
+                            cursor-pointer
+                            shadow-md
+                            hover:shadow-xl
+                            hover:scale-105
+                            transition
+                            "
+                        >
+                            <h2 className="text-black text-2xl italic">
                                 {trip.tripName}
                             </h2>
-                            <p style={{ color: '#666' }}>
+
+                            <p className="text-gray-500">
                                 <strong>Plan:</strong> {trip.daysArray.length} days scheduled
                             </p>
 
-                            <small style={{ color: '#999' }}>Trip ID: {trip._id}</small>
+                            <small className="text-gray-400">
+                                Trip ID: {trip._id}
+                            </small>
                         </div>
-                    ))}
-                </div>
-            ) : (
-                <div style={{ textAlign: 'center', marginTop: '50px' }}>
-                    <h3>No trips found.</h3>
-                    <p>When you add a trip via the API, it will appear here.</p>
-                </div>
-            )}
+                    ))
+                ) : (
+                    <div className="col-span-2 text-center mt-10">
+                        <h3>No trips found.</h3>
+                        <p>When you add a trip via the API, it will appear here.</p>
+                    </div>
+                )}
+
+            </div>
+
+            
         </div>
     );
 }
