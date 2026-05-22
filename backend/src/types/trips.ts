@@ -11,8 +11,7 @@ import { z } from "zod";
 // This is for runtime validation
 export const tripSchemaZod = z.object({
   tripName: z.string(),
-  daysArray: z.array(z.string()),
-  tripOwner: z.string(),
+  daysArray: z.array(z.string())
 });
 
 // 2. Extract the TypeScript type

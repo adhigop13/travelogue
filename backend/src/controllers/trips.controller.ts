@@ -24,9 +24,9 @@ export async function createTrip(req: Request, res: Response) {
         if (!parseResult.success) {
             return res.status(400).json({error: "Malformed or invalid request"});
         } 
-        const {tripName, daysArray, tripOwner} = req.body;
-        const isExistingTrip = await TripModel.findOne({tripName: tripName});
-        const isExistingUser = await UserModel.findOne({username: tripOwner});
+        const {tripName, daysArray} = req.body;
+        const isExistingTrip = await TripModel.findOne({tripName: tripName, tripOwner: res.locals.user.username});
+        const isExistingUser = await UserModel.findOne({username: res.locals.user.username});
         if (isExistingTrip) {
             return res.status(409).json({error: "This trip already exists! Please try again with a new name..."})
         } 
@@ -36,7 +36,7 @@ export async function createTrip(req: Request, res: Response) {
         const newlyCreatedTrip = await TripModel.create({
             tripName: tripName,
             daysArray: daysArray,
-            tripOwner: tripOwner
+            tripOwner: res.locals.user.username
         })
         res.status(201).json({trip: newlyCreatedTrip});
     } catch (error) {
