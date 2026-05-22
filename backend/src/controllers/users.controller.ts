@@ -1,10 +1,10 @@
-import { RegisterBody, LoginBody } from "../types";
+import { RegisterBodyType, LoginBodyType } from "../types";
 import { Request, Response } from "express";
 import jwt from 'jsonwebtoken';
 import UserModel from "../models/users.model";
 import { hashPwd, compareHashes } from "../helpers/pwd_hash";
 
-export async function registerUser (req: Request<{}, {}, RegisterBody>, res: Response) {
+export async function registerUser (req: Request<{}, {}, RegisterBodyType>, res: Response) {
     const { username, name, password, email } = req.body;
     if (!username || !name || !email || !password) {
         return res.status(400).json({error: "Missing required fields!"});
@@ -39,7 +39,7 @@ export async function registerUser (req: Request<{}, {}, RegisterBody>, res: Res
     }
 }
 
-export async function loginUser (req: Request<{}, {}, LoginBody>, res: Response) {
+export async function loginUser (req: Request<{}, {}, LoginBodyType>, res: Response) {
     const { username, password } = req.body;
     let userDetails;
     if (!username || !password) {

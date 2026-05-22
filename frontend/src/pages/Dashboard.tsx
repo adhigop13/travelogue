@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import type { Trip } from '../../../backend/src/types/trips';
-import type { Day } from "../../../backend/src/types/days";
+import type { TripType } from '../../../backend/src/types/trips';
+import type { DayType } from "../../../backend/src/types/days";
 
 export default function Dashboard() {
-    const [trips, setTrips] = useState<Trip[]>([]);
+    const [trips, setTrips] = useState<TripType[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -35,7 +35,7 @@ export default function Dashboard() {
 
                 if (!response.ok) throw new Error("Failed to fetch trips.");
 
-                const data: Trip[] = await response.json();
+                const data: TripType[] = await response.json();
                 setTrips(data);
             } catch (err: any) {
                 console.log(err)

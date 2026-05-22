@@ -1,6 +1,11 @@
 import mongoose from "mongoose";
 
 const daySchema = new mongoose.Schema({
+    tripId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Trip",
+        required: true
+    },
     dayName: {
         type: String,
         required: true
@@ -16,5 +21,5 @@ const daySchema = new mongoose.Schema({
     }]
 });
 
-const Day = mongoose.model("Days", daySchema);
-export default Day;
+const DayModel = mongoose.model("Day", daySchema);
+export default DayModel;
