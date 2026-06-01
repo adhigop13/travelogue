@@ -4,7 +4,6 @@ const tripSchema = new mongoose.Schema({
     tripName: {
         type: String,
         required: true,
-        unique: true
     },
     daysArray: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -17,6 +16,7 @@ const tripSchema = new mongoose.Schema({
         required: true
     }
 });
+tripSchema.index({ tripOwner: 1, tripName: 1 }, { unique: true });
 
 const TripModel = mongoose.model("Trip", tripSchema);
 export default TripModel;

@@ -21,5 +21,6 @@ const daySchema = new mongoose.Schema({
     }]
 });
 
+daySchema.index({ tripId: 1, date: 1 }, { unique: true });
 const DayModel = mongoose.model("Day", daySchema);
 export default DayModel;

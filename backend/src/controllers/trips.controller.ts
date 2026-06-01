@@ -1,8 +1,10 @@
 import { Request, Response } from 'express';
 import TripModel from '../models/trips.model';
 import UserModel from '../models/users.model';
-import { TripType } from '../types/index';
+import { daySchemaZod, TripType } from '../types/index';
 import { tripSchemaZod } from '../types/index';
+import DayModel from '../models/days.model';
+import { date } from 'zod';
 
 export async function getTrips(req: Request, res: Response) {
     console.log("Received trips!");
@@ -41,5 +43,36 @@ export async function createTrip(req: Request, res: Response) {
         res.status(201).json({trip: newlyCreatedTrip});
     } catch (error) {
         res.status(500).json({message: "Internal Server Error"});
+    }
+}
+
+export async function addNewDay(req: Request, res: Response) {
+    try {
+        const parseResult = daySchemaZod.safeParse(req.body);
+        if (!parseResult.success) {
+            return res.status(400).json({error: "Malformed or invalid request"});
+        }
+        const {tripId, dayName, date, tasks} = req.body;
+        
+        const isExistingTrip = await TripModel.findOne({_id: tripId, tripOwner: res.locals.user.username})
+        if (!isExistingTrip) {
+            return res.status(400).json({error: "Trip does not exist!"})
+        }
+        // trip exists, check if day already exists with same date
+        const isExistingDay = await DayModel.findOne({ tripId: tripId, date: date });
+        if (isExistingDay) {
+            return res.status(409).json({error: "A day with same date already exists in this trip! Please try with a different date"});
+        }
+        // trip exists, day doesn't exist in that trip. So can add
+        const newlyCreatedDay = await DayModel.create({
+            tripId: tripId,
+            dayName: dayName,
+            date: date,
+            tasks: []
+        })
+        const updatedTrip = await TripModel.findByIdAndUpdate(tripId, { $push: { daysArray: newlyCreatedDay._id } }, { new: true });
+        res.status(201).json({updatedTrip: updatedTrip});
+    } catch (error: any) {
+        res.status(500).json({ message: error.message });
     }
 }
