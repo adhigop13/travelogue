@@ -14,7 +14,7 @@ export const daySchemaZod = z.object({
     date: z.string().refine(val => !isNaN(Date.parse(val)), {
       message: "Invalid date format"
     }),
-    tasks: z.array(z.string()).optional()
+    tasksArray: z.array(z.string()).optional()
 });
 
 

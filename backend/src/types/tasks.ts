@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const taskSchemaZod = z.object({
-    DayId: z.string(),
+    dayId: z.string(),
     time: z.string(),
     taskDescription: z.string(),
     location: z.string(),

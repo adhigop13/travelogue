@@ -14,7 +14,7 @@ const daySchema = new mongoose.Schema({
         type: Date,
         required: true
     },
-    tasks: [{
+    tasksArray: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Task", //reference task model
         required: true

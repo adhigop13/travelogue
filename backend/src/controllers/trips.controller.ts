@@ -1,10 +1,11 @@
 import { Request, Response } from 'express';
 import TripModel from '../models/trips.model';
 import UserModel from '../models/users.model';
-import { daySchemaZod, TripType } from '../types/index';
+import { daySchemaZod, taskSchemaZod, TripType } from '../types/index';
 import { tripSchemaZod } from '../types/index';
 import DayModel from '../models/days.model';
 import { date } from 'zod';
+import TaskModel from '../models/task.model';
 
 export async function getTrips(req: Request, res: Response) {
     console.log("Received trips!");
@@ -56,7 +57,7 @@ export async function addNewDay(req: Request, res: Response) {
         
         const isExistingTrip = await TripModel.findOne({_id: tripId, tripOwner: res.locals.user.username})
         if (!isExistingTrip) {
-            return res.status(400).json({error: "Trip does not exist!"})
+            return res.status(404).json({error: "Trip does not exist!"})
         }
         // trip exists, check if day already exists with same date
         const isExistingDay = await DayModel.findOne({ tripId: tripId, date: date });
@@ -74,5 +75,36 @@ export async function addNewDay(req: Request, res: Response) {
         res.status(201).json({updatedTrip: updatedTrip});
     } catch (error: any) {
         res.status(500).json({ message: error.message });
+    }
+}
+
+export async function addNewTask(req: Request, res: Response) {
+    try {
+        const parseResult = taskSchemaZod.safeParse(req.body);
+        if (!parseResult.success) {
+            return res.status(400).json({error: "Malformed or invalid request!"});
+        }
+        const {dayId, time, taskDescription, location, notes} = req.body;
+
+        const isExistingDay = await DayModel.findOne({ _id: dayId});
+        const tripId = isExistingDay?.tripId;
+        console.log(res.locals.user.username)
+        const isExistingTrip = await TripModel.findOne({_id: tripId, tripOwner: res.locals.user.username})
+        if (!isExistingDay || !isExistingTrip) {
+            return res.status(404).json({ error: "Trip / Day does not exist!"}) // if user tries to add task to another user's trip
+        }
+
+        const newlyCreatedTask = await TaskModel.create({
+            dayId: dayId,
+            time: time,
+            taskDescription: taskDescription,
+            location: location,
+            notes: notes 
+        });
+
+        const updatedDay = await DayModel.findByIdAndUpdate(dayId, { $push: { tasksArray: newlyCreatedTask._id } }, { new: true });
+        res.status(201).json({updatedDay: updatedDay});
+    } catch (error: any) {
+        res.status(500).json({message: error.message});
     }
 }

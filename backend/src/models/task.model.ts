@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const taskSchema = new mongoose.Schema({
-    DayId: {
+    dayId: {
         type: mongoose.Schema.Types.ObjectId,
         required: true
     },
