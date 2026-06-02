@@ -10,6 +10,7 @@ import { z } from "zod";
 // 1. Define the Zod schema
 // This is for runtime validation
 export const tripSchemaZod = z.object({
+  _id: z.string().optional(),
   tripName: z.string(),
   daysArray: z.array(z.string()),
 });
