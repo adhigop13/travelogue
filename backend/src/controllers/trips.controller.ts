@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import TripModel from '../models/trips.model';
 import UserModel from '../models/users.model';
-import { daySchemaZod, taskSchemaZod, TripType } from '../types/index';
-import { tripSchemaZod } from '../types/index';
+import { daySchemaZod, taskSchemaZod, tripSchemaZod } from '../types/index';
+import { deleteTripSchemaZod } from '../types/index';
 import DayModel from '../models/days.model';
 import { date } from 'zod';
 import TaskModel from '../models/task.model';
@@ -107,4 +107,35 @@ export async function addNewTask(req: Request, res: Response) {
     } catch (error: any) {
         res.status(500).json({message: error.message});
     }
+}
+
+export async function deleteTrip(req: Request, res: Response) {
+    try {
+        const parseResult = deleteTripSchemaZod.safeParse(req.body);
+        if (!parseResult) {
+            return res.status(400).json({error: "Malformed or invalid request"})
+        }
+        const tripId = req.body.tripId;
+        const isExistingTrip = await TripModel.findById({_id: tripId});
+        const isOwner = isExistingTrip?.tripOwner == res.locals.user.username;
+        if (!isExistingTrip || !isOwner) {
+            return res.status(401).json({error: "Trip does not exist!"});
+        }
+        // at this point, trip exists, and the username is the owner of that trip.
+        // need to delete trip, all its associated days and tasks
+
+        const dayIds = isExistingTrip.daysArray;
+
+        const associatedDays = await DayModel.find({ _id: { $in: dayIds } }).select("tasksArray");
+
+        const taskIds = associatedDays.flatMap(day => day.tasksArray || []);
+
+        // Do the deletions in bulk 
+        await TaskModel.deleteMany({ _id: { $in: taskIds } });
+        await DayModel.deleteMany({ _id: { $in: dayIds } });  
+        await TripModel.deleteOne({ _id: tripId });           
+        return res.status(200).json({ message: "Trip and all associated days and tasks successfully deleted" });
+    } catch (error) {
+        return res.status(500).json({ message: "Internal server error", error });
+  }
 }
