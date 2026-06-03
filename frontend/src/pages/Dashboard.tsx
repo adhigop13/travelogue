@@ -53,24 +53,34 @@ export default function Dashboard() {
         window.location.href = '/login'; 
     };
 
-    if (loading) return <div style={{ padding: '20px' }}>Syncing with Travelogue...</div>;
-    if (error) return <div style={{ padding: '20px', color: 'red' }}>{error}</div>;
+    // if (loading) return <div style={{ padding: '20px' }}>Syncing with Travelogue...</div>;
+    // if (error) return <div style={{ padding: '20px', color: 'red' }}>{error}</div>;
 
     return (
-        <div className="min-h-screen p-8">
-
-            <div className="flex items-center p-4">
-                <div className="flex-1"></div>
-                <div className='flex-1 text-center text-xl font-bold p-8 italic'>
-                    <h1>My Itineraries</h1>
+        <div className="flex flex-col items-center">
+            {/* navBar with logout button and Travelogue site name */}
+            <div className="flex justify-between w-full bg-black">
+                <div className = 'font-sans text-2xl font-bold px-4 py-3'>
+                    travelogue
                 </div>
-                <div className='flex-1 flex justify-end'>
-                    <button className= 'rounded-lg' onClick={handleLogout} >Logout</button>
+                <div className= "flex gap-4 px-9">
+                    <button onClick = {handleLogout}>
+                        Logout
+                    </button>
                 </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-6 p-6">
 
+            <div className='flex flex-row justify-between items-center'>
+                <h1 className='font-sans text-center text-xl font-bold p-8'>My Itineraries</h1>
+                <a className='bg-[white] cursor-pointer rounded-2xl p-3 '>
+                    Create new trip!
+                </a>
+            </div>
+
+    
+
+            <div className= "grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 p-6 gap-8 justify-items-center">
                 {trips.length > 0 ? (
                     trips.map((trip) => (
                         <div
@@ -94,10 +104,6 @@ export default function Dashboard() {
                             <p className="text-gray-500">
                                 <strong>Plan:</strong> {trip.daysArray.length} days scheduled
                             </p>
-
-                            <small className="text-gray-400">
-                                Trip ID: {trip._id}
-                            </small>
                         </div>
                     ))
                 ) : (
@@ -109,7 +115,6 @@ export default function Dashboard() {
 
             </div>
 
-            
         </div>
     );
 }
