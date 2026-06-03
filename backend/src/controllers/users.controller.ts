@@ -5,8 +5,8 @@ import UserModel from "../models/users.model";
 import { hashPwd, compareHashes } from "../helpers/pwd_hash";
 
 export async function registerUser (req: Request<{}, {}, RegisterBodyType>, res: Response) {
-    const { username, name, password, email } = req.body;
-    if (!username || !name || !email || !password) {
+    const { username, password, email } = req.body;
+    if (!username || !email || !password) {
         return res.status(400).json({error: "Missing required fields!"});
     } else {
         try {
@@ -22,7 +22,6 @@ export async function registerUser (req: Request<{}, {}, RegisterBodyType>, res:
             const hashedPwd = await hashPwd(password);
             const userCreated = await UserModel.create({
                 username: username,
-                name: name,
                 email: email,
                 password: hashedPwd,
             });
@@ -57,7 +56,6 @@ export async function loginUser (req: Request<{}, {}, LoginBodyType>, res: Respo
             }
             const payload = {
                 username: userDetails.username,
-                name: userDetails.name,
                 email: userDetails.email
             }
             const token = jwt.sign(payload, process.env.JWT_SECRET!, {

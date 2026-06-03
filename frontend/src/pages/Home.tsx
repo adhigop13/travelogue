@@ -8,6 +8,9 @@ export default function Home() {
     const handleLoginClick = () => {
         navigate('/login');
     }
+    const handleRegisterClick = () => {
+        navigate('/register');
+    }
     return (
 
         <div className="relative min-h-screen w-full flex flex-col">
@@ -50,7 +53,7 @@ export default function Home() {
                         ${showContent ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"}
                         `}
                 >
-                    <button className="bg-blue-600 text-white px-6 py-2 rounded-lg">
+                    <button className="bg-blue-600 text-white px-6 py-2 rounded-lg" onClick={handleRegisterClick}>
                         Get Started
                     </button>
                 </div>
