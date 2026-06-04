@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import type { TripType } from '../../../backend/src/types/trips';
 import type { DayType } from "../../../backend/src/types/days";
+import { Link } from 'react-router-dom';
+import NavBar from './navBar';
 
 export default function Dashboard() {
     const [trips, setTrips] = useState<TripType[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
-
+        
     useEffect(() => {
         const fetchTrips = async () => {
             try {
@@ -48,10 +50,6 @@ export default function Dashboard() {
         fetchTrips();
     }, []);
 
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        window.location.href = '/login'; 
-    };
 
     // if (loading) return <div style={{ padding: '20px' }}>Syncing with Travelogue...</div>;
     // if (error) return <div style={{ padding: '20px', color: 'red' }}>{error}</div>;
@@ -59,22 +57,15 @@ export default function Dashboard() {
     return (
         <div className="flex flex-col items-center">
             {/* navBar with logout button and Travelogue site name */}
-            <div className="flex justify-between w-full bg-black">
-                <div className = 'font-sans text-2xl font-bold px-4 py-3'>
-                    travelogue
-                </div>
-                <div className= "flex gap-4 px-9">
-                    <button onClick = {handleLogout}>
-                        Logout
-                    </button>
-                </div>
-            </div>
+            <NavBar></NavBar>
 
 
             <div className='flex flex-row justify-between items-center'>
                 <h1 className='font-sans text-center text-xl font-bold p-8'>My Itineraries</h1>
                 <a className='bg-[white] cursor-pointer rounded-2xl p-3 '>
+                    <Link to = "/createtrip">
                     Create new trip!
+                    </Link>
                 </a>
             </div>
 
