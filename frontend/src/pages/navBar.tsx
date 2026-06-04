@@ -1,5 +1,3 @@
-import { useState, useEffect } from "react"
-
 // Navbar with logout button
 export default function NavBar() {
     
