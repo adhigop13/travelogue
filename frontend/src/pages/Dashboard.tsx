@@ -15,7 +15,7 @@ export default function Dashboard() {
                 const token = localStorage.getItem('token');
                 
                 // If no token, we shouldn't even try to fetch
-                if (!token) {
+                if (!token) {   // Not a great way to do validation. Need to check if token is valid, not just presence. Fix later.
                     setError("No authentication token found.");
                     setLoading(false);
                     return;

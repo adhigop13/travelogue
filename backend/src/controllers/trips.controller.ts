@@ -12,7 +12,7 @@ export async function getTrips(req: Request, res: Response) {
     try {
             console.log(res.locals.user.username)
             const tripOwner: string = res.locals.user.username;
-            const trips = await TripModel.find({tripOwner: tripOwner});
+            const trips = await TripModel.find({tripOwner: tripOwner}).sort({ _id: -1 });
             console.log("Trips found:", trips);
             res.status(200).json(trips);
     }

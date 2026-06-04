@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react';
 import type { TripType } from '../../../backend/src/types/trips';
 import NavBar from './navBar';
+import axios from 'axios';
 
 export default function CreateTrip() {
 
@@ -11,6 +12,7 @@ export default function CreateTrip() {
     const assetUrl = import.meta.env.VITE_ASSET_URL;
 
     useEffect(() => {
+        if (!loading) return;
         const fetchTrips = async () => {
             try {
                 const token = localStorage.getItem('token');
@@ -49,7 +51,37 @@ export default function CreateTrip() {
         };
 
         fetchTrips();
-    }, []);
+    }, [loading]);
+
+
+    
+    const createNewTrip = async() => {
+        try {
+            const token = localStorage.getItem('token');
+            // If no token, we shouldn't even try to create trip
+            if (!token) {
+                setError("No authentication token found.");
+                setLoading(false);
+                return;
+            }
+
+            const tripCreatePayload = {
+                tripName: tripName,
+                daysArray: []
+            }
+            const tripCreateResponse = await axios.post("http://localhost:5000/trips/createTrip", tripCreatePayload, {
+                headers: {
+                'Authorization': `Bearer ${token}`
+                }
+            });
+            setLoading(true);
+            console.log(tripCreateResponse)
+        } catch (error: any) {
+            console.log(error)
+            setError(error.message || "Failed to load trips.");
+        }
+    }
+    
 
     return (
         <div className='relative z-0 h-screen w-screen flex flex-col items-stretch gap-4'>
@@ -57,8 +89,8 @@ export default function CreateTrip() {
             <div className='z-10'>
                 <NavBar></NavBar>
             </div>
-            <div className='flex flex-row gap-4 p-8 z-10 overflow-y-auto'>
-                <div className='flex flex-col border rounded-lg p-4'>
+            <div className='flex flex-row gap-4 py-4 px-8 z-10 overflow-y-auto'>
+                <div className='flex flex-col border rounded-lg p-4 backdrop-blur-xs'>
                     <div className='text-4xl self-center p-2'>
                         Your Trips
                     </div>
@@ -71,7 +103,8 @@ export default function CreateTrip() {
                                         onClick={() => ""}
                                         className="
                                         p-6
-                                        bg-white
+                                        backdrop-blur-3xl
+                                        border
                                         rounded-2xl
                                         cursor-pointer
                                         shadow-md
@@ -80,7 +113,7 @@ export default function CreateTrip() {
                                         transition
                                         "
                                     >
-                                        <h2 className="text-black text-2xl italic">
+                                        <h2 className="text-white text-2xl font-bold italic">
                                             {trip.tripName}
                                         </h2>
 
@@ -100,12 +133,18 @@ export default function CreateTrip() {
                     </div>
                 </div>
 
-                <div className='border rounded-lg p-4 flex-1 z-20'>
-                    <div className='text-4xl p-2 text-center'>
+                <div className='backdrop-blur-xs border rounded-lg p-4 flex flex-1 flex-col z-20'>
+                    <div className='flex justify-center text-4xl p-2'>
                         New Trip Creation
                     </div>
-                    <div>
-                        Display the form here                    
+                    <div className='p-4 flex flex-1 flex-col text-3xl py-35 items-center'>
+                        <h3 className='p-3'>
+                            Where are we headed?
+                        </h3>
+                        <div className='flex flex-row gap-3'>
+                            <input className='border px-3 py-1 text-2xl rounded-2xl' onChange={(e) => setTripName(e.target.value)} />
+                            <a className='bg-amber-50 cursor-pointer rounded-xl p-1' onClick={createNewTrip}> Go </a>
+                        </div>
                     </div>
                 </div>
             </div>
