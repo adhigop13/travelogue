@@ -84,7 +84,7 @@ export async function addNewTask(req: Request, res: Response) {
         if (!parseResult.success) {
             return res.status(400).json({error: "Malformed or invalid request!"});
         }
-        const {dayId, time, taskDescription, location, notes} = req.body;
+        const {dayId, time, location, notes} = req.body;
 
         const isExistingDay = await DayModel.findOne({ _id: dayId});
         const tripId = isExistingDay?.tripId;
@@ -97,7 +97,6 @@ export async function addNewTask(req: Request, res: Response) {
         const newlyCreatedTask = await TaskModel.create({
             dayId: dayId,
             time: time,
-            taskDescription: taskDescription,
             location: location,
             notes: notes 
         });

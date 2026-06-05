@@ -4,11 +4,17 @@ import { useState } from "react";
 export interface TripCreateCardsProps {
     setError: React.Dispatch<React.SetStateAction<string | null>>;
     setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+    setCreateCardState: React.Dispatch<React.SetStateAction<boolean>>;
+    setDayTaskState: React.Dispatch<React.SetStateAction<boolean>>;
+    setTripId: React.Dispatch<React.SetStateAction<String | null>>;
 }
 
 export default function TripCreateCards({
     setError,
     setLoading,
+    setCreateCardState,
+    setDayTaskState,
+    setTripId
 }: TripCreateCardsProps) {
     const createNewTrip = async() => {
         try {
@@ -30,7 +36,11 @@ export default function TripCreateCards({
                 }
             });
             setLoading(true);
-            console.log(tripCreateResponse)
+            setCreateCardState(false);
+            setDayTaskState(true);
+            setTripId(tripCreateResponse.data.trip._id);     //Send back the trip id of latest created trip
+            console.log("Backend response:", tripCreateResponse)
+            console.log(tripCreateResponse.data.trip.id)
         } catch (error: any) {
             console.log(error)
             setError(error.message || "Failed to load trips.");

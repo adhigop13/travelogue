@@ -8,9 +8,6 @@ const taskSchema = new mongoose.Schema({
     time: {
         type: String
     },
-    taskDescription: {
-        type: String
-    },
     location: {
         type: String
     },

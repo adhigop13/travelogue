@@ -4,13 +4,23 @@ import NavBar from './navBar';
 import axios from 'axios';
 import TripSideCards from './TripSideCards';
 import TripCreateCards from './TripCreateCards';
+import CreateDayTask from './CreateDayTask';
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function CreateTrip() {
 
     const [trips, setTrips] = useState<TripType[]>([]);
+    const [latestCreatedTripId, setTripId] = useState<String | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const assetUrl = import.meta.env.VITE_ASSET_URL;
+
+    const [createCardState, setCreateCardState] = useState<boolean>(true);
+
+    const [createDayTaskState, setDayTaskState] = useState<boolean>(false);
+
+    const day = "Day 1"; //dummy day. Need to ask for start date and no. of days from user, then pass it one by one.
+    const date = "2026-07-05"   ////dummy date. Need to ask for start date and no. of days from user, then pass it one by one.
 
     useEffect(() => {
         if (!loading) return;
@@ -62,7 +72,7 @@ export default function CreateTrip() {
             <div className='z-10'>
                 <NavBar></NavBar>
             </div>
-            <div className='flex flex-row gap-4 py-4 px-8 z-10 overflow-y-auto'>
+            <div className='flex flex-row flex-1 gap-4 py-4 px-8 z-10 overflow-y-auto'>
                 <div className='flex flex-col border rounded-lg p-4 backdrop-blur-xs'>
                     <div className='text-4xl self-center p-2'>
                         Your Trips
@@ -72,7 +82,14 @@ export default function CreateTrip() {
                     </div>
                 </div>
 
-                <TripCreateCards setError={setError} setLoading={setLoading}></TripCreateCards>
+                { createCardState && 
+                <TripCreateCards setError={setError} setLoading={setLoading} setCreateCardState={setCreateCardState} setDayTaskState={setDayTaskState} setTripId={setTripId}
+                ></TripCreateCards> 
+                }
+                { createDayTaskState && 
+                    <CreateDayTask day={day} date={date} latestCreatedTripId= {latestCreatedTripId}/>
+                }
+                
             </div>
         </div>
         
