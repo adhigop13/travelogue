@@ -2,11 +2,12 @@ import {useState, useEffect} from 'react';
 import type { TripType } from '../../../backend/src/types/trips';
 import NavBar from './navBar';
 import axios from 'axios';
+import TripSideCards from './TripSideCards';
+import TripCreateCards from './TripCreateCards';
 
 export default function CreateTrip() {
 
     const [trips, setTrips] = useState<TripType[]>([]);
-    const [tripName, setTripName] = useState("");
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const assetUrl = import.meta.env.VITE_ASSET_URL;
@@ -53,34 +54,6 @@ export default function CreateTrip() {
         fetchTrips();
     }, [loading]);
 
-
-    
-    const createNewTrip = async() => {
-        try {
-            const token = localStorage.getItem('token');
-            // If no token, we shouldn't even try to create trip
-            if (!token) {
-                setError("No authentication token found.");
-                setLoading(false);
-                return;
-            }
-
-            const tripCreatePayload = {
-                tripName: tripName,
-                daysArray: []
-            }
-            const tripCreateResponse = await axios.post("http://localhost:5000/trips/createTrip", tripCreatePayload, {
-                headers: {
-                'Authorization': `Bearer ${token}`
-                }
-            });
-            setLoading(true);
-            console.log(tripCreateResponse)
-        } catch (error: any) {
-            console.log(error)
-            setError(error.message || "Failed to load trips.");
-        }
-    }
     
 
     return (
@@ -95,58 +68,11 @@ export default function CreateTrip() {
                         Your Trips
                     </div>
                     <div className='overflow-y-auto'>
-                        <div className= "grid grid-cols-1 p-6 gap-8 justify-items-center">
-                            {trips.length > 0 ? (
-                                trips.map((trip) => (
-                                    <div
-                                        key={trip._id}
-                                        onClick={() => ""}
-                                        className="
-                                        p-6
-                                        backdrop-blur-3xl
-                                        border
-                                        rounded-2xl
-                                        cursor-pointer
-                                        shadow-md
-                                        hover:shadow-xl
-                                        hover:scale-105
-                                        transition
-                                        "
-                                    >
-                                        <h2 className="text-white text-2xl font-bold italic">
-                                            {trip.tripName}
-                                        </h2>
-
-                                        <p className="text-gray-500">
-                                            <strong>Plan:</strong> {trip.daysArray.length} days scheduled
-                                        </p>
-                                    </div>
-                                ))
-                            ) : (
-                                <div className="col-span-2 text-center mt-10">
-                                    <h3>No trips found.</h3>
-                                    <p>When you add a trip via the API, it will appear here.</p>
-                                </div>
-                            )}
-
-                        </div>
+                        <TripSideCards trips={trips}></TripSideCards>
                     </div>
                 </div>
 
-                <div className='backdrop-blur-xs border rounded-lg p-4 flex flex-1 flex-col z-20'>
-                    <div className='flex justify-center text-4xl p-2'>
-                        New Trip Creation
-                    </div>
-                    <div className='p-4 flex flex-1 flex-col text-3xl py-35 items-center'>
-                        <h3 className='p-3'>
-                            Where are we headed?
-                        </h3>
-                        <div className='flex flex-row gap-3'>
-                            <input className='border px-3 py-1 text-2xl rounded-2xl' onChange={(e) => setTripName(e.target.value)} />
-                            <a className='bg-amber-50 cursor-pointer rounded-xl p-1' onClick={createNewTrip}> Go </a>
-                        </div>
-                    </div>
-                </div>
+                <TripCreateCards setError={setError} setLoading={setLoading}></TripCreateCards>
             </div>
         </div>
         
