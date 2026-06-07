@@ -6,6 +6,7 @@ import TripSideCards from './TripSideCards';
 import TripCreateCards from './TripCreateCards';
 import CreateDayTask from './CreateDayTask';
 import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 export default function CreateTrip() {
 
@@ -14,6 +15,7 @@ export default function CreateTrip() {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const assetUrl = import.meta.env.VITE_ASSET_URL;
+    const navigate = useNavigate();
 
     const [createCardState, setCreateCardState] = useState<boolean>(true);
 
@@ -67,14 +69,17 @@ export default function CreateTrip() {
     
 
     return (
-        <div className='relative z-0 h-screen w-screen flex flex-col items-stretch gap-4'>
+        <div className='relative z-0 h-screen w-screen flex flex-col items-stretch gap-4 pb-4'>
             <img className="absolute inset-0 w-full h-full object-cover z-0" src = {`${assetUrl}/world-map.jpg`} />
             <div className='z-10'>
                 <NavBar></NavBar>
             </div>
-            <div className='flex flex-row flex-1 gap-4 py-4 px-8 z-10 overflow-y-auto'>
-                <div className='flex flex-col border rounded-lg p-4 backdrop-blur-xs'>
-                    <div className='text-4xl self-center p-2'>
+            <div className='z-10 flex flex-row cursor-pointer'>
+                <a className='text-white! hover:text-amber-800! rounded-2xl pl-10' onClick={() => navigate('/dashboard')}> Back </a>
+            </div>
+            <div className='flex flex-row flex-1 gap-4 px-8 z-10 overflow-y-auto'>
+                <div className='flex flex-col border rounded-lg backdrop-blur-xs'>
+                    <div className='text-4xl self-center pt-5 pb-2'>
                         Your Trips
                     </div>
                     <div className='overflow-y-auto'>
