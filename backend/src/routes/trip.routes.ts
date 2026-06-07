@@ -1,5 +1,5 @@
 import { Router } from "express";
-import {getTrips, createTrip, addNewDay, addNewTask, deleteTrip} from "../controllers/trips.controller";
+import {getTrips, createTrip, addNewDay, addNewTask, deleteTrip, getTripDetails} from "../controllers/trips.controller";
 import requireSignIn from "../middleware/authMiddleware";
 
 const router = Router();
@@ -11,4 +11,6 @@ router.post('/addDay', requireSignIn, addNewDay);
 router.post('/addTask', requireSignIn, addNewTask);
 
 router.delete('/deleteTrip', requireSignIn, deleteTrip);
+
+router.get('/getTripDetails', requireSignIn, getTripDetails);
 export default router;  

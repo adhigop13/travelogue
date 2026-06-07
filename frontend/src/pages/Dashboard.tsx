@@ -1,13 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type SetStateAction } from 'react';
 import type { TripType } from '../../../backend/src/types/trips';
 import type { DayType } from "../../../backend/src/types/days";
 import { Link } from 'react-router-dom';
 import NavBar from './navBar';
+import ViewTripDetails from './ViewTripDetails';
 
 export default function Dashboard() {
     const [trips, setTrips] = useState<TripType[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+    const [showTripInfoButton, setTripInfoButton] = useState<TripType | null>(null);
         
     useEffect(() => {
         const fetchTrips = async () => {
@@ -55,7 +57,7 @@ export default function Dashboard() {
     // if (error) return <div style={{ padding: '20px', color: 'red' }}>{error}</div>;
 
     return (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center relative z-0">
             {/* navBar with logout button and Travelogue site name */}
             <NavBar></NavBar>
 
@@ -70,13 +72,12 @@ export default function Dashboard() {
             </div>
 
     
-
-            <div className= "grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 p-6 gap-8 justify-items-center">
+            <div className= "grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 p-6 gap-8 justify-items-center z-10">
                 {trips.length > 0 ? (
                     trips.map((trip) => (
                         <div
                             key={trip._id}
-                            onClick={() => ""}
+                            onClick={() => setTripInfoButton(trip)}
                             className="
                             p-6
                             bg-white
@@ -105,7 +106,10 @@ export default function Dashboard() {
                 )}
 
             </div>
-
+            {showTripInfoButton && 
+            <div className="fixed inset-0 z-10 flex items-center justify-center bg-black/30">
+                <ViewTripDetails setTripInfoButton={setTripInfoButton}></ViewTripDetails>
+            </div> }
         </div>
     );
 }

@@ -138,3 +138,29 @@ export async function deleteTrip(req: Request, res: Response) {
         return res.status(500).json({ message: "Internal server error", error });
   }
 }
+
+export async function getTripDetails(req: Request, res: Response) {
+    try {
+        const { tripId } = req.body;
+        const tripOwner = res.locals.user.username;
+        if (!tripId) {
+            return res.status(400).json({error: "Please include tripId in query"})
+        }
+        const response = await TripModel.findById({
+            _id: tripId, tripOwner: tripOwner
+        }).populate({
+            path: 'daysArray',
+            populate: {
+                path: 'tasksArray',
+                model: 'Task'
+            }
+        });
+        if (!response) {
+            return res.status(401).json({message: "Not allowed"});
+        }
+        return res.status(200).json(response);
+    } catch (error: any) {
+        console.log(error)
+        return res.status(500).json({message: "Internal server error"})
+    }
+  }
