@@ -38,8 +38,8 @@ export default function CreateDayTask({day, date, latestCreatedTripId}: CreateDa
                 }
             }
             const responseDayCreated = await axios.post("http://localhost:5000/trips/addDay", {tripId: latestCreatedTripId, dayName: day, date:date, tasksArray: []}, bearerToken);
-            const dayId = responseDayCreated?.data?._id;
-            // const responseTaskCreated = await axios.post("http://localhost:5000/trips/addTask/", {dayId, time, location, notes}, bearerToken);
+            const latestCreatedDay = responseDayCreated?.data?.latestDayAdded;
+            const responseTaskCreated = await axios.post("http://localhost:5000/trips/addTask/", {dayId: latestCreatedDay, time: time, location: location, notes: notes}, bearerToken);
 
             notifySuccess();
         } catch (error:any) {

@@ -72,7 +72,7 @@ export async function addNewDay(req: Request, res: Response) {
             tasks: []
         })
         const updatedTrip = await TripModel.findByIdAndUpdate(tripId, { $push: { daysArray: newlyCreatedDay._id } }, { new: true });
-        res.status(201).json({updatedTrip: updatedTrip});
+        res.status(201).json({latestDayAdded:newlyCreatedDay.id ,updatedTrip: updatedTrip});
     } catch (error: any) {
         res.status(500).json({ message: error.message });
     }
@@ -102,7 +102,7 @@ export async function addNewTask(req: Request, res: Response) {
         });
 
         const updatedDay = await DayModel.findByIdAndUpdate(dayId, { $push: { tasksArray: newlyCreatedTask._id } }, { new: true });
-        res.status(201).json({updatedDay: updatedDay});
+        res.status(201).json({latestTaskAdded: newlyCreatedTask.id, updatedDay: updatedDay});
     } catch (error: any) {
         res.status(500).json({message: error.message});
     }
