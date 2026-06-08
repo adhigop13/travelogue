@@ -9,7 +9,8 @@ export default function Dashboard() {
     const [trips, setTrips] = useState<TripType[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
-    const [showTripInfoButton, setTripInfoButton] = useState<TripType | null>(null);
+    const [tripInfoButton, setTripInfoButton] = useState<TripType | null>(null);
+    const assetUrl = import.meta.env.VITE_ASSET_URL
         
     useEffect(() => {
         const fetchTrips = async () => {
@@ -52,23 +53,21 @@ export default function Dashboard() {
         fetchTrips();
     }, []);
 
-
     // if (loading) return <div style={{ padding: '20px' }}>Syncing with Travelogue...</div>;
     // if (error) return <div style={{ padding: '20px', color: 'red' }}>{error}</div>;
 
     return (
-        <div className="flex flex-col items-center relative z-0">
+        <div className="relative flex flex-col items-center z-0 min-h-screen">
+            <img className="absolute inset-0 w-full h-full object-cover z-0" src = {`${assetUrl}/Persian-architecture.jpg`} />
             {/* navBar with logout button and Travelogue site name */}
             <NavBar></NavBar>
 
 
-            <div className='flex flex-row justify-between items-center'>
+            <div className='flex flex-row justify-between items-center z-10'>
                 <h1 className='font-sans text-center text-xl font-bold p-8'>My Itineraries</h1>
-                <a className='bg-[white] cursor-pointer rounded-2xl p-3 '>
-                    <Link to = "/createtrip">
+                <Link to = "/createtrip" className='backdrop-blur-xs text-blue-400! hover:backdrop-blur-3xl cursor-pointer border rounded-2xl p-2'>
                     Create new trip!
-                    </Link>
-                </a>
+                </Link>
             </div>
 
     
@@ -99,16 +98,16 @@ export default function Dashboard() {
                         </div>
                     ))
                 ) : (
-                    <div className="col-span-2 text-center mt-10">
+                    <div className="flex flex-col text-center  text-blue-700 font-extrabold bg-white border rounded-2xl px-2">
                         <h3>No trips found.</h3>
-                        <p>When you add a trip via the API, it will appear here.</p>
+                        <p>Create a new trip today!</p>
                     </div>
                 )}
 
             </div>
-            {showTripInfoButton && 
+            {tripInfoButton && 
             <div className="fixed inset-0 z-10 flex items-center justify-center bg-black/30">
-                <ViewTripDetails setTripInfoButton={setTripInfoButton}></ViewTripDetails>
+                <ViewTripDetails setTripInfoButton={setTripInfoButton} tripId = {tripInfoButton._id}></ViewTripDetails>
             </div> }
         </div>
     );
