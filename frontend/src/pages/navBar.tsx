@@ -7,14 +7,14 @@ export default function NavBar() {
     };
     
     return (
-        <div className="flex justify-between w-full bg-black">
+        <div className="flex justify-between w-full bg-black z-50">
             <div className = 'font-sans text-2xl font-bold px-4 py-3'>
                 travelogue
             </div>
-            <div className= "flex gap-4 px-9">
-                <button onClick = {handleLogout}>
+            <div className="px-4 py-3">
+                <a className = "cursor-pointer p-2 mt-0.5 text-white!" onClick = {handleLogout}>
                     Logout
-                </button>
+                </a>
             </div>
         </div>
     )
