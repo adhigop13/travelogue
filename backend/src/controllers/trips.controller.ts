@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import TripModel from '../models/trips.model';
 import UserModel from '../models/users.model';
-import { daySchemaZod, taskSchemaZod, tripSchemaZod } from '../types/index';
+import { createDaySchemaZod, createTaskSchemaZod, createTripSchemaZod, daySchemaZod, taskSchemaZod, tripSchemaZod } from '../types/index';
 import { deleteTripSchemaZod } from '../types/index';
 import DayModel from '../models/days.model';
 import { date } from 'zod';
@@ -23,7 +23,7 @@ export async function getTrips(req: Request, res: Response) {
 
 export async function createTrip(req: Request, res: Response) {
     try {
-        const parseResult = tripSchemaZod.safeParse(req.body);
+        const parseResult = createTripSchemaZod.safeParse(req.body);
         if (!parseResult.success) {
             return res.status(400).json({error: "Malformed or invalid request"});
         } 
@@ -49,7 +49,7 @@ export async function createTrip(req: Request, res: Response) {
 
 export async function addNewDay(req: Request, res: Response) {
     try {
-        const parseResult = daySchemaZod.safeParse(req.body);
+        const parseResult = createDaySchemaZod.safeParse(req.body);
         if (!parseResult.success) {
             return res.status(400).json({error: "Malformed or invalid request"});
         }
@@ -80,7 +80,7 @@ export async function addNewDay(req: Request, res: Response) {
 
 export async function addNewTask(req: Request, res: Response) {
     try {
-        const parseResult = taskSchemaZod.safeParse(req.body);
+        const parseResult = createTaskSchemaZod.safeParse(req.body);
         if (!parseResult.success) {
             return res.status(400).json({error: "Malformed or invalid request!"});
         }
@@ -141,7 +141,7 @@ export async function deleteTrip(req: Request, res: Response) {
 
 export async function getTripDetails(req: Request, res: Response) {
     try {
-        const { tripId } = req.body;
+        const { tripId } = req.query;   //use for get queries
         const tripOwner = res.locals.user.username;
         if (!tripId) {
             return res.status(400).json({error: "Please include tripId in query"})
