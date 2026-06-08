@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Datepicker } from "flowbite-react";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 export interface TripCreateCardsProps {
@@ -6,7 +7,8 @@ export interface TripCreateCardsProps {
     setLoading: React.Dispatch<React.SetStateAction<boolean>>;
     setCreateCardState: React.Dispatch<React.SetStateAction<boolean>>;
     setDayTaskState: React.Dispatch<React.SetStateAction<boolean>>;
-    setTripId: React.Dispatch<React.SetStateAction<String | null>>;
+    setTripId: React.Dispatch<React.SetStateAction<string | null>>;
+    setDate: React.Dispatch<React.SetStateAction<Date | null>>;
 }
 
 export default function TripCreateCards({
@@ -14,7 +16,8 @@ export default function TripCreateCards({
     setLoading,
     setCreateCardState,
     setDayTaskState,
-    setTripId
+    setTripId,
+    setDate
 }: TripCreateCardsProps) {
 
     const toastSuccess = (tripName: string) => {
@@ -61,8 +64,9 @@ export default function TripCreateCards({
     }
 
     const [tripName, setTripName] = useState("");
+
     return (
-        <div className='backdrop-blur-xs border rounded-lg p-4 flex flex-1 flex-col z-20'>
+        <div className='backdrop-blur-xs border rounded-lg p-4 flex flex-1 flex-col z-20 overflow-auto'>
             <div className='flex justify-center text-4xl p-2'>
                 New Trip Creation
             </div>
@@ -71,7 +75,8 @@ export default function TripCreateCards({
                     Where are we headed?
                 </h3>
                 <div className='flex flex-row gap-3'>
-                    <input className='border px-3 py-1 text-2xl rounded-2xl' onChange={(e) => setTripName(e.target.value)} />
+                    <input className='border px-3 py-1 text-l rounded-2xl' onChange={(e) => setTripName(e.target.value)} />
+                    <Datepicker className="text-base w-1/4 p-1 grow " onChange={(selectedDate) => {setDate(selectedDate); console.log(selectedDate)}}/>
                     <a className='border-2 border-black text-white! cursor-pointer rounded-xl p-1 hover:bg-blue-200' onClick={createNewTrip}> Go </a>
                 </div>
             </div>

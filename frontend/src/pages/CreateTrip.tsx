@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 export default function CreateTrip() {
 
     const [trips, setTrips] = useState<TripType[]>([]);
-    const [latestCreatedTripId, setTripId] = useState<String | null>(null);
+    const [latestCreatedTripId, setTripId] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const assetUrl = import.meta.env.VITE_ASSET_URL;
@@ -21,9 +21,8 @@ export default function CreateTrip() {
 
     const [createDayTaskState, setDayTaskState] = useState<boolean>(false);
 
-    const day = "Day 1"; //dummy day. Need to ask for start date and no. of days from user, then pass it one by one.
-    const date = "2026-07-05"   ////dummy date. Need to ask for start date and no. of days from user, then pass it one by one.
-
+    const [date, setDate] = useState<Date | null> (new Date());
+    console.log(date);
     useEffect(() => {
         if (!loading) return;
         const fetchTrips = async () => {
@@ -88,11 +87,11 @@ export default function CreateTrip() {
                 </div>
 
                 { createCardState && 
-                <TripCreateCards setError={setError} setLoading={setLoading} setCreateCardState={setCreateCardState} setDayTaskState={setDayTaskState} setTripId={setTripId}
+                <TripCreateCards setError={setError} setLoading={setLoading} setCreateCardState={setCreateCardState} setDayTaskState={setDayTaskState} setTripId={setTripId} setDate={setDate}
                 ></TripCreateCards> 
                 }
                 { createDayTaskState && 
-                    <CreateDayTask day={day} date={date} latestCreatedTripId= {latestCreatedTripId}/>
+                    <CreateDayTask date={date} latestCreatedTripId= {latestCreatedTripId} setDate={setDate} setDayTaskState={setDayTaskState}/>
                 }
                 
             </div>
