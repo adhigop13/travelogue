@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import { API_BASE_URL } from "../src/config/api";
 
 export interface CreateDayTaskProp {
     date: Date | null,
@@ -42,9 +43,9 @@ export default function CreateDayTask({date, latestCreatedTripId, setDate, setDa
                 'Authorization': `Bearer ${token}`
                 }
             }
-            const responseDayCreated = await axios.post("http://localhost:5000/trips/addDay", {tripId: latestCreatedTripId, dayName: event, date:date, tasksArray: []}, bearerToken);
+            const responseDayCreated = await axios.post(`${API_BASE_URL}/trips/addDay`, {tripId: latestCreatedTripId, dayName: event, date:date, tasksArray: []}, bearerToken);
             const latestCreatedDay = responseDayCreated?.data?.latestDayAdded;
-            const responseTaskCreated = await axios.post("http://localhost:5000/trips/addTask/", {dayId: latestCreatedDay, time: time, location: location, notes: notes}, bearerToken);
+            const responseTaskCreated = await axios.post(`${API_BASE_URL}/trips/addTask/`, {dayId: latestCreatedDay, time: time, location: location, notes: notes}, bearerToken);
 
             notifySuccess()
             setTimeout(() => {
@@ -73,9 +74,9 @@ export default function CreateDayTask({date, latestCreatedTripId, setDate, setDa
                 }
             }
 
-            const responseDayCreated = await axios.post("http://localhost:5000/trips/addDay", {tripId: latestCreatedTripId, dayName: event, date:date, tasksArray: []}, bearerToken);
+            const responseDayCreated = await axios.post(`${API_BASE_URL}/trips/addDay`, {tripId: latestCreatedTripId, dayName: event, date:date, tasksArray: []}, bearerToken);
             const latestCreatedDay = responseDayCreated?.data?.latestDayAdded;
-            const responseTaskCreated = await axios.post("http://localhost:5000/trips/addTask/", {dayId: latestCreatedDay, time: time, location: location, notes: notes}, bearerToken);
+            const responseTaskCreated = await axios.post(`${API_BASE_URL}/trips/addTask/`, {dayId: latestCreatedDay, time: time, location: location, notes: notes}, bearerToken);
 
             const currentDate = date;
             if (!currentDate) {

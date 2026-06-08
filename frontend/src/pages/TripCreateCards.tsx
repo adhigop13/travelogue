@@ -2,6 +2,7 @@ import axios from "axios";
 import { Datepicker } from "flowbite-react";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import { API_BASE_URL } from "../src/config/api";
 export interface TripCreateCardsProps {
     setError: React.Dispatch<React.SetStateAction<string | null>>;
     setLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -44,7 +45,7 @@ export default function TripCreateCards({
                 tripName: tripName,
                 daysArray: []
             }
-            const tripCreateResponse = await axios.post("http://localhost:5000/trips/createTrip", tripCreatePayload, {
+            const tripCreateResponse = await axios.post(`${API_BASE_URL}/trips/createTrip`, tripCreatePayload, {
                 headers: {
                 'Authorization': `Bearer ${token}`
                 }

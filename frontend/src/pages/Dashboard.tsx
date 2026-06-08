@@ -4,6 +4,7 @@ import type { DayType } from "../../../backend/src/types/days";
 import { Link } from 'react-router-dom';
 import NavBar from './navBar';
 import ViewTripDetails from './ViewTripDetails';
+import { API_BASE_URL } from '../src/config/api';
 
 export default function Dashboard() {
     const [trips, setTrips] = useState<TripType[]>([]);
@@ -24,7 +25,7 @@ export default function Dashboard() {
                     return;
                 }
 
-                const response = await fetch('http://localhost:5000/trips', {
+                const response = await fetch(`${API_BASE_URL}/trips`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'

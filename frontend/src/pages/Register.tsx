@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
+import { API_BASE_URL } from "../src/config/api";
 
 export default function Register() {
     const navigate = useNavigate();
@@ -32,7 +33,7 @@ export default function Register() {
                 toast("Password cannot be empty!");
                 return;
             }
-            const response = await axios.post("http://localhost:5000/auth/register", {username: username, email: email, password: password});
+            const response = await axios.post(`${API_BASE_URL}/auth/register`, {username: username, email: email, password: password});
             notifySuccess();
             console.log(response.data);
         } catch (error: any) {

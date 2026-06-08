@@ -2,6 +2,7 @@ import axios from "axios"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
+import { API_BASE_URL } from "../src/config/api";
 
 
 export default function Login() {
@@ -13,7 +14,7 @@ export default function Login() {
     const notifyFailure = () => toast("Login failed");
     async function handleLogin() {
         try {
-            const response = await axios.post('http://localhost:5000/auth/login', {username,password});
+            const response = await axios.post(`${API_BASE_URL}/auth/login`, {username,password});
             localStorage.setItem('token', response.data.token);
             console.log('Login successful: ');
             navigate('/dashboard');

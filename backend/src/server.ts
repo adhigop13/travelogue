@@ -9,7 +9,7 @@ const app = express();
 
 // Use the CORS middleware
 app.use(cors({
-    origin: 'http://localhost:3000', // Allow your specific frontend URL
+    origin: process.env.FRONTEND_URL, // Allow your specific frontend URL
     methods: ['GET', 'POST'],        // Allow these methods
     credentials: true                // Allow cookies/headers if needed
 }));

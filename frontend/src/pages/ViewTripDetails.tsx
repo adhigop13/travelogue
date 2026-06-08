@@ -2,6 +2,7 @@ import type React from "react";
 import { useEffect, useState } from "react";
 import type { TripType, PopulatedTrip } from "../../../backend/src/types/trips";
 import axios from "axios";
+import { API_BASE_URL } from "../src/config/api";
 
 export interface ViewTripDetailsProp {
     setTripInfoButton: React.Dispatch<React.SetStateAction<TripType | null>>
@@ -23,7 +24,7 @@ export default function ViewTripDetails({ setTripInfoButton, tripId }: ViewTripD
                     return;
                 }
 
-                const responseDayCreated = await axios.get("http://localhost:5000/trips/getTripDetails", {
+                const responseDayCreated = await axios.get(`${API_BASE_URL}/trips/getTripDetails`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     },

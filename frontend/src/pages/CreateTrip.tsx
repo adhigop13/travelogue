@@ -7,6 +7,7 @@ import TripCreateCards from './TripCreateCards';
 import CreateDayTask from './CreateDayTask';
 import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../src/config/api';
 
 export default function CreateTrip() {
 
@@ -36,7 +37,7 @@ export default function CreateTrip() {
                     return;
                 }
 
-                const response = await fetch('http://localhost:5000/trips', {
+                const response = await fetch(`${API_BASE_URL}/trips`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
